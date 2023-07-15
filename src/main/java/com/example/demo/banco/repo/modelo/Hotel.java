@@ -2,6 +2,7 @@ package com.example.demo.banco.repo.modelo;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -26,7 +27,7 @@ public class Hotel {
 	@Column(name = "hotel_direccion")
 	private String direccion;
 
-	@OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "hotel",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Habitacion> habitaciones;
 
 	//Get y sets

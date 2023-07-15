@@ -22,6 +22,13 @@ public class HotelRepoImpl implements IHotelRepo {
 	@PersistenceContext
 	private EntityManager entityManager;
 
+	
+	
+	@Override
+	public void insertar(Hotel hotel) {
+		this.entityManager.persist(hotel);		
+	}
+
 	@Override
 	public List<Hotel> seleccionarInnerJoin() {
 		// SQL
@@ -34,7 +41,7 @@ public class HotelRepoImpl implements IHotelRepo {
 				.createQuery("" + "select h from Hotel h inner join h.habitaciones ha", Hotel.class);
 
 		List<Hotel> hotels = myQuery.getResultList();
-
+		
 		hotels.forEach(h -> {
 			h.getHabitaciones().size();
 		});
@@ -139,5 +146,18 @@ public class HotelRepoImpl implements IHotelRepo {
 
 		return hotels;
 	}
+
+	@Override
+	public List<Hotel> seleccionarFetchJoin() {
+		TypedQuery<Hotel> myQuery = this.entityManager
+				.createQuery("" + "select h from Hotel h join fetch h.habitaciones ha", Hotel.class);
+
+		
+		
+
+		return myQuery.getResultList();
+	}
+	
+	
 
 }
