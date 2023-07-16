@@ -9,10 +9,15 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.example.demo.banco.repo.ITransferenciaRepo;
+import com.example.demo.banco.repo.modelo.CuentaBancaria;
 import com.example.demo.banco.repo.modelo.Habitacion;
 import com.example.demo.banco.repo.modelo.Hotel;
+import com.example.demo.banco.repo.modelo.Propietario;
+import com.example.demo.banco.service.ICuentaBancariaService;
 import com.example.demo.banco.service.IHabitacionService;
 import com.example.demo.banco.service.IHotelService;
+import com.example.demo.banco.service.ITransferenciaService;
 
 @SpringBootApplication
 public class Pa2U3P4DllYfApplication implements CommandLineRunner {
@@ -22,6 +27,13 @@ public class Pa2U3P4DllYfApplication implements CommandLineRunner {
 
 	@Autowired
 	private IHabitacionService iHabitacionService;
+	
+	
+	@Autowired
+	private ICuentaBancariaService iCuentaBancariaService;
+	
+	@Autowired
+	private ITransferenciaService iTransferenciaService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Pa2U3P4DllYfApplication.class, args);
@@ -30,81 +42,29 @@ public class Pa2U3P4DllYfApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println("UNIDAD 3");
-		/*
 		
-		hotels1.forEach(h -> {
+		Propietario propietario1=new Propietario();
+		propietario1.setApellido("Molina");
+		propietario1.setCedula("1712341234");
+		propietario1.setCuentasBancarias(null);
+		propietario1.setNombre("Daniel");
+		
+		CuentaBancaria cuentaBancaria1=new CuentaBancaria();
+		cuentaBancaria1.setNumero("1234");
+		cuentaBancaria1.setPropietario(propietario1);
+		cuentaBancaria1.setSaldo(new BigDecimal(10000));
+		cuentaBancaria1.setTipo("A");
+		List<CuentaBancaria> cuentasBancarias1= new ArrayList<>();
+		cuentasBancarias1.add(cuentaBancaria1);
+		
+		propietario1.setCuentasBancarias(cuentasBancarias1);
+		
+		this.iCuentaBancariaService.agregar(cuentaBancaria1);
 
-			System.out.println("Hotel: " + h.getNombre());
-			System.out.println("Tiene las siguientes habitaciones: ");
-			List<Habitacion> habitaciones = h.getHabitaciones();
-			habitaciones.forEach(ha -> {
-				System.out.println(ha.getNumero());
-			});
-
-		});
-		*/
-		// 2da ver:
-		System.out.println("########## Inner Join (LAZY) ##########");
-		List<Hotel> hotels1 = this.iHotelService.buscarInnerJoin();
-		for (Hotel h : hotels1) {
-			System.out.println(h.getNombre());
-			System.out.println("Tiene las siguientes habitaciones: ");
-
-			for (Habitacion ha : h.getHabitaciones()) {
-				System.out.println(ha.getNumero());
-			}
-		}
+		this.iTransferenciaService.transferir(cuentaBancaria1.getId(), 2, new BigDecimal(100));
 		
-		System.out.println("########## SQL Join Fetch ##########");
-		List<Hotel> hotels1F = this.iHotelService.buscarFetchJoin();
-		for (Hotel h : hotels1F) {
-			System.out.println(h.getNombre());
-			System.out.println("Tiene las siguientes habitaciones: ");
-
-			for (Habitacion ha : h.getHabitaciones()) {
-				System.out.println(ha.getNumero());
-			}
-		}
+		this.iTransferenciaService.reporte().forEach(System.out::println);
 		
-		//
-		
-		
-		Hotel hotel1=new Hotel();
-		
-		hotel1.setDireccion("Yaniry's House");
-		hotel1.setNombre("Bonito");
-		
-		Habitacion habi1=new Habitacion();
-		habi1.setNumero("N8");
-		habi1.setValor(new BigDecimal(20));
-		
-		Habitacion habi2=new Habitacion();
-		habi2.setNumero("N9");
-		habi2.setValor(new BigDecimal(25));
-		
-		Habitacion habi3=new Habitacion();
-		habi3.setNumero("N10");
-		habi3.setValor(new BigDecimal(30));
-		
-		
-		habi1.setHotel(hotel1);
-		habi2.setHotel(hotel1);
-		habi3.setHotel(hotel1);
-		
-		List<Habitacion> habitaciones1= new ArrayList<>();
-		habitaciones1.add(habi1);
-		habitaciones1.add(habi2);
-		habitaciones1.add(habi3);
-		
-		hotel1.setHabitaciones(habitaciones1);
-
-		this.iHotelService.guardar(hotel1);
-		
-		habitaciones1.forEach(ha->{
-			System.out.println("Numero: "+ha.getNumero());
-			System.out.println("Valor con iva: "+ha.getValorIncluidoIva());
-		});
-
 	}
 
 }
