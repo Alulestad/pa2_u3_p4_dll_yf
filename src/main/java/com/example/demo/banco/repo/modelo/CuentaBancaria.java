@@ -47,8 +47,11 @@ public class CuentaBancaria {
 	@JoinColumn(name = "cuba_id_propietario")
 	private Propietario propietario;
 
-	@OneToMany(mappedBy = "cuentaBancaria",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Transferencia> transferencia;
+	@OneToMany(mappedBy = "cuentaBancariaOrigen", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Transferencia> transferencia1;
+
+	@OneToMany(mappedBy = "cuentaBancariaDestino", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Transferencia> transferencia2;
 
 	// gets y sets
 	public Integer getId() {
@@ -91,12 +94,20 @@ public class CuentaBancaria {
 		this.propietario = propietario;
 	}
 
-	public List<Transferencia> getTransferencia() {
-		return transferencia;
+	public List<Transferencia> getTransferencia1() {
+		return transferencia1;
 	}
 
-	public void setTransferencia(List<Transferencia> transferencia) {
-		this.transferencia = transferencia;
+	public void setTransferencia1(List<Transferencia> transferencia1) {
+		this.transferencia1 = transferencia1;
+	}
+
+	public List<Transferencia> getTransferencia2() {
+		return transferencia2;
+	}
+
+	public void setTransferencia2(List<Transferencia> transferencia2) {
+		this.transferencia2 = transferencia2;
 	}
 
 	@Override

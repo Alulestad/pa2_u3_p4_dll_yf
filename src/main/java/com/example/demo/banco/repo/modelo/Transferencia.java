@@ -33,17 +33,19 @@ public class Transferencia {
 	private LocalDateTime fecha;
 	@Column(name = "tran_nonto")
 	private BigDecimal nonto;
-	@Column(name = "tran_id_cta_destino")
-	private Integer idCtaDestinio;
 
 	// id_cta_origen
 	// id_cta_destino
 
-	@ManyToOne( fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "tran_id_cta_origen")
-	private CuentaBancaria cuentaBancaria;
+	private CuentaBancaria cuentaBancariaOrigen;
 
-	//gets y sets
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "tran_id_cta_destino")
+	private CuentaBancaria cuentaBancariaDestino;
+
+	// gets y sets
 	public Integer getId() {
 		return id;
 	}
@@ -68,26 +70,30 @@ public class Transferencia {
 		this.nonto = nonto;
 	}
 
-	public Integer getIdCtaDestinio() {
-		return idCtaDestinio;
+	public CuentaBancaria getCuentaBancariaOrigen() {
+		return cuentaBancariaOrigen;
 	}
 
-	public void setIdCtaDestinio(Integer idCtaDestinio) {
-		this.idCtaDestinio = idCtaDestinio;
+	public void setCuentaBancariaOrigen(CuentaBancaria cuentaBancariaOrigen) {
+		this.cuentaBancariaOrigen = cuentaBancariaOrigen;
 	}
 
-	public CuentaBancaria getCuentaBancaria() {
-		return cuentaBancaria;
+	public CuentaBancaria getCuentaBancariaDestino() {
+		return cuentaBancariaDestino;
 	}
 
-	public void setCuentaBancaria(CuentaBancaria cuentaBancaria) {
-		this.cuentaBancaria = cuentaBancaria;
+	public void setCuentaBancariaDestino(CuentaBancaria cuentaBancariaDestino) {
+		this.cuentaBancariaDestino = cuentaBancariaDestino;
 	}
 
 	@Override
 	public String toString() {
-		return "Transferencia [id=" + id + ", fecha=" + fecha + ", nonto=" + nonto + ", idCtaDestinio=" + idCtaDestinio
-				+ "ID Cuenta Origen="+cuentaBancaria.getId()+"]";
+		return "Transferencia [id=" + id + ", fecha=" + fecha + ", nonto=" + nonto + ", cuentaBancariaOrigenId="
+				+ cuentaBancariaOrigen.getId() + ", cuentaBancariaDestino=" + cuentaBancariaDestino.getId() + "]";
 	}
+
+	
+
+	
 
 }

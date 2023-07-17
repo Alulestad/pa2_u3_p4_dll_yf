@@ -28,8 +28,8 @@ public class TransferenciaServiceImpl implements ITransferenciaService {
 		
 		Transferencia transferencia=new Transferencia();
 		transferencia.setFecha(LocalDateTime.now());
-		transferencia.setCuentaBancaria(cuentaBancariaOrigen);
-		transferencia.setIdCtaDestinio(idCuentaDestino);
+		transferencia.setCuentaBancariaOrigen(cuentaBancariaOrigen);
+		transferencia.setCuentaBancariaDestino(cuentaBancariaDestino);
 		transferencia.setNonto(monto);
 		
 		if(monto.compareTo(cuentaBancariaOrigen.getSaldo())<=0) {

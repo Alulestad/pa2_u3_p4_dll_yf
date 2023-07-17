@@ -19,7 +19,10 @@ import com.example.demo.banco.service.IHabitacionService;
 import com.example.demo.banco.service.IHotelService;
 import com.example.demo.banco.service.ITransferenciaService;
 
+import jakarta.transaction.Transactional;
+
 @SpringBootApplication
+
 public class Pa2U3P4DllYfApplication implements CommandLineRunner {
 
 	@Autowired
