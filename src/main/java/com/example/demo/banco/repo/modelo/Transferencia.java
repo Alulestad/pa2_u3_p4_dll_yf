@@ -87,7 +87,7 @@ public class Transferencia {
 	@Override
 	public String toString() {
 		return "Transferencia [id=" + id + ", fecha=" + fecha + ", nonto=" + nonto + ", idCtaDestinio=" + idCtaDestinio
-				+ "]";
+				+ "ID Cuenta Origen="+cuentaBancaria.getId()+"]";
 	}
 
 }

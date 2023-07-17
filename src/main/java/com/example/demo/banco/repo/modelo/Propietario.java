@@ -32,7 +32,7 @@ public class Propietario {
 	@Column(name = "prop_cedula")
 	private String cedula;
 
-	@OneToMany(mappedBy = "propietario", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "propietario",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<CuentaBancaria> cuentasBancarias;
 
 	

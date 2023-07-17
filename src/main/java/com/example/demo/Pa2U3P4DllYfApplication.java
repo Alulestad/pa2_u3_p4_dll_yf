@@ -54,14 +54,23 @@ public class Pa2U3P4DllYfApplication implements CommandLineRunner {
 		cuentaBancaria1.setPropietario(propietario1);
 		cuentaBancaria1.setSaldo(new BigDecimal(10000));
 		cuentaBancaria1.setTipo("A");
+		
+		CuentaBancaria cuentaBancaria2=new CuentaBancaria();
+		cuentaBancaria2.setNumero("1235");
+		cuentaBancaria2.setPropietario(propietario1);
+		cuentaBancaria2.setSaldo(new BigDecimal(10000));
+		cuentaBancaria2.setTipo("C");
+		
 		List<CuentaBancaria> cuentasBancarias1= new ArrayList<>();
 		cuentasBancarias1.add(cuentaBancaria1);
+		cuentasBancarias1.add(cuentaBancaria2);
 		
 		propietario1.setCuentasBancarias(cuentasBancarias1);
 		
 		this.iCuentaBancariaService.agregar(cuentaBancaria1);
+		
 
-		this.iTransferenciaService.transferir(cuentaBancaria1.getId(), 2, new BigDecimal(100));
+		this.iTransferenciaService.transferir(cuentaBancaria1.getId(), cuentaBancaria2.getId(), new BigDecimal(100));
 		
 		this.iTransferenciaService.reporte().forEach(System.out::println);
 		
