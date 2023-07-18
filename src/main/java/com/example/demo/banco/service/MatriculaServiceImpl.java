@@ -60,7 +60,11 @@ public class MatriculaServiceImpl implements IMatriculaService {
 			
 		}
 		
-		this.iMatriculaRepo.insertar(matriculas.get(0));
+		
+		for(Matricula matriculafor:matriculas) {
+			this.iMatriculaRepo.insertar(matriculafor);
+		}
+		
 
 		
 		
