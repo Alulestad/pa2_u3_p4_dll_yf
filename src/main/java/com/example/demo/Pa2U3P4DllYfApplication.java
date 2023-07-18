@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,12 +12,19 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.example.demo.banco.repo.ITransferenciaRepo;
 import com.example.demo.banco.repo.modelo.CuentaBancaria;
+import com.example.demo.banco.repo.modelo.Estudiante;
 import com.example.demo.banco.repo.modelo.Habitacion;
 import com.example.demo.banco.repo.modelo.Hotel;
+import com.example.demo.banco.repo.modelo.Materia;
 import com.example.demo.banco.repo.modelo.Propietario;
+import com.example.demo.banco.repo.modelo.Provincia;
+import com.example.demo.banco.repo.modelo.Semestre;
 import com.example.demo.banco.service.ICuentaBancariaService;
+import com.example.demo.banco.service.IEstudianteService;
 import com.example.demo.banco.service.IHabitacionService;
 import com.example.demo.banco.service.IHotelService;
+import com.example.demo.banco.service.IMateriaService;
+import com.example.demo.banco.service.IMatriculaService;
 import com.example.demo.banco.service.ITransferenciaService;
 
 import jakarta.transaction.Transactional;
@@ -26,17 +34,13 @@ import jakarta.transaction.Transactional;
 public class Pa2U3P4DllYfApplication implements CommandLineRunner {
 
 	@Autowired
-	private IHotelService iHotelService;
-
-	@Autowired
-	private IHabitacionService iHabitacionService;
-	
+	private IEstudianteService iEstudianteService;
 	
 	@Autowired
-	private ICuentaBancariaService iCuentaBancariaService;
+	private IMateriaService iMateriaService;
 	
 	@Autowired
-	private ITransferenciaService iTransferenciaService;
+	private IMatriculaService iMatriculaService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Pa2U3P4DllYfApplication.class, args);
@@ -46,36 +50,64 @@ public class Pa2U3P4DllYfApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		System.out.println("UNIDAD 3");
 		
-		Propietario propietario1=new Propietario();
-		propietario1.setApellido("Molina");
-		propietario1.setCedula("1712341234");
-		propietario1.setCuentasBancarias(null);
-		propietario1.setNombre("Daniel");
+		Provincia provincia1= new Provincia();
+		provincia1.setCapital("Quito");
+		provincia1.setCodigo("17");
+		provincia1.setNombre("Pichincha");
 		
-		CuentaBancaria cuentaBancaria1=new CuentaBancaria();
-		cuentaBancaria1.setNumero("1234");
-		cuentaBancaria1.setPropietario(propietario1);
-		cuentaBancaria1.setSaldo(new BigDecimal(10000));
-		cuentaBancaria1.setTipo("A");
+		Estudiante estu1= new Estudiante();
+		estu1.setApellido("Molina");
+		estu1.setCedula("171234");
+		estu1.setNombre("Daniel");
+		estu1.setProvincia(provincia1);
 		
-		CuentaBancaria cuentaBancaria2=new CuentaBancaria();
-		cuentaBancaria2.setNumero("1235");
-		cuentaBancaria2.setPropietario(propietario1);
-		cuentaBancaria2.setSaldo(new BigDecimal(10000));
-		cuentaBancaria2.setTipo("C");
+		Estudiante estu2= new Estudiante();
+		estu2.setApellido("Florez");
+		estu2.setCedula("171235");
+		estu2.setNombre("Yaniry");
+		estu2.setProvincia(provincia1);
 		
-		List<CuentaBancaria> cuentasBancarias1= new ArrayList<>();
-		cuentasBancarias1.add(cuentaBancaria1);
-		cuentasBancarias1.add(cuentaBancaria2);
+		List<Estudiante> estudiantes1= new ArrayList<>();
+		estudiantes1.add(estu1);
+		estudiantes1.add(estu2);
 		
-		propietario1.setCuentasBancarias(cuentasBancarias1);
+		provincia1.setEstudiantes(estudiantes1);
 		
-		this.iCuentaBancariaService.agregar(cuentaBancaria1);
+		this.iEstudianteService.agregar(estu1);
 		
-
-		this.iTransferenciaService.transferir(cuentaBancaria1.getId(), cuentaBancaria2.getId(), new BigDecimal(100));
+		Semestre semestre1= new Semestre();
+		semestre1.setFechaInicio(LocalDateTime.now());
+		semestre1.setNumero(1);
+		semestre1.setPeriodo("2020-2020");
 		
-		this.iTransferenciaService.reporte().forEach(System.out::println);
+		Materia materia1= new Materia();
+		materia1.setCodigo("P1");
+		materia1.setCreditos(6);
+		materia1.setNombre("Programacion");
+		materia1.setSemestre(semestre1);
+		
+		Materia materia2= new Materia();
+		materia2.setCodigo("F1");
+		materia2.setCreditos(10);
+		materia2.setNombre("Fisica");
+		materia2.setSemestre(semestre1);
+		
+		List<Materia> materias1= new ArrayList<>();
+		materias1.add(materia1);
+		materias1.add(materia2);
+		
+		semestre1.setMaterias(materias1);
+		
+		this.iMateriaService.agregar(materia1);
+		
+		
+		List<String> codigosMaterias=new ArrayList<>();
+		for(Materia mater:materias1) {
+			codigosMaterias.add(mater.getCodigo());
+		}
+		
+		this.iMatriculaService.matricular(estu1.getCedula(), codigosMaterias);
+		
 		
 	}
 
