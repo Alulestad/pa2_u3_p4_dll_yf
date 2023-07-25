@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import com.example.demo.banco.repo.ITransferenciaRepo;
 import com.example.demo.banco.repo.modelo.CuentaBancaria;
@@ -25,6 +26,7 @@ import com.example.demo.banco.service.IHabitacionService;
 import com.example.demo.banco.service.IHotelService;
 import com.example.demo.banco.service.IMateriaService;
 import com.example.demo.banco.service.IMatriculaService;
+import com.example.demo.banco.service.IPropietarioService;
 import com.example.demo.banco.service.ITransferenciaService;
 
 import jakarta.transaction.Transactional;
@@ -41,6 +43,9 @@ public class Pa2U3P4DllYfApplication implements CommandLineRunner {
 	
 	@Autowired
 	private IMatriculaService iMatriculaService;
+	
+	@Autowired
+	private ICuentaBancariaService iCuentaBancariaService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Pa2U3P4DllYfApplication.class, args);
@@ -48,67 +53,16 @@ public class Pa2U3P4DllYfApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		System.out.println("UNIDAD 3");
+		TransactionSynchronizationManager.isActualTransactionActive();
+		System.out.println("Main: "+TransactionSynchronizationManager.isActualTransactionActive());
 		
-		Provincia provincia1= new Provincia();
-		provincia1.setCapital("Quito");
-		provincia1.setCodigo("17");
-		provincia1.setNombre("Pichincha");
+		CuentaBancaria cuentaBancaria1= new CuentaBancaria();
+		cuentaBancaria1.setNumero("1243");
+		cuentaBancaria1.setPropietario(null);
+		cuentaBancaria1.setSaldo(new BigDecimal(1000));
+		cuentaBancaria1.setTipo("A");
 		
-		Estudiante estu1= new Estudiante();
-		estu1.setApellido("Molina");
-		estu1.setCedula("171234");
-		estu1.setNombre("Daniel");
-		estu1.setProvincia(provincia1);
-		
-		Estudiante estu2= new Estudiante();
-		estu2.setApellido("Florez");
-		estu2.setCedula("171235");
-		estu2.setNombre("Yaniry");
-		estu2.setProvincia(provincia1);
-		
-		List<Estudiante> estudiantes1= new ArrayList<>();
-		estudiantes1.add(estu1);
-		estudiantes1.add(estu2);
-		
-		provincia1.setEstudiantes(estudiantes1);
-		
-		this.iEstudianteService.agregar(estu1);
-		
-		Semestre semestre1= new Semestre();
-		semestre1.setFechaInicio(LocalDateTime.now());
-		semestre1.setNumero(1);
-		semestre1.setPeriodo("2020-2020");
-		
-		Materia materia1= new Materia();
-		materia1.setCodigo("P1");
-		materia1.setCreditos(6);
-		materia1.setNombre("Programacion");
-		materia1.setSemestre(semestre1);
-		
-		Materia materia2= new Materia();
-		materia2.setCodigo("F1");
-		materia2.setCreditos(10);
-		materia2.setNombre("Fisica");
-		materia2.setSemestre(semestre1);
-		
-		List<Materia> materias1= new ArrayList<>();
-		materias1.add(materia1);
-		materias1.add(materia2);
-		
-		semestre1.setMaterias(materias1);
-		
-		this.iMateriaService.agregar(materia1);
-		
-		
-		List<String> codigosMaterias=new ArrayList<>();
-		for(Materia mater:materias1) {
-			codigosMaterias.add(mater.getCodigo());
-		}
-		
-		this.iMatriculaService.matricular(estu1.getCedula(), codigosMaterias);
-		
-		
+		this.iCuentaBancariaService.agregar(cuentaBancaria1);
 	}
 
 }

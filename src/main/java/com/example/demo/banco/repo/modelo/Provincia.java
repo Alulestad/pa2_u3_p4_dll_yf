@@ -1,5 +1,4 @@
 package com.example.demo.banco.repo.modelo;
-
 import java.util.List;
 
 import org.springframework.stereotype.Component;
