@@ -31,6 +31,7 @@ public class CuentaBancariaRepoImpl implements ICuentaBancariaRepo {
 	}
 
 	@Override
+	@Transactional(value = TxType.REQUIRED)//requiried
 	public void actualizar(CuentaBancaria cuentaBancaria) {
 		this.entityManager.merge(cuentaBancaria);
 	}

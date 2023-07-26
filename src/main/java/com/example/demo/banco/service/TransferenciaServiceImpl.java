@@ -12,6 +12,9 @@ import com.example.demo.banco.repo.ITransferenciaRepo;
 import com.example.demo.banco.repo.modelo.CuentaBancaria;
 import com.example.demo.banco.repo.modelo.Transferencia;
 
+import jakarta.transaction.Transactional;
+import jakarta.transaction.Transactional.TxType;
+
 @Service
 public class TransferenciaServiceImpl implements ITransferenciaService {
 
@@ -22,6 +25,7 @@ public class TransferenciaServiceImpl implements ITransferenciaService {
 	private ICuentaBancariaRepo iCuentaBancariaRepo;
 	
 	@Override
+	@Transactional(value = TxType.REQUIRES_NEW)
 	public void transferir(Integer idCuentaOrigen,Integer idCuentaDestino,BigDecimal monto) {
 		CuentaBancaria cuentaBancariaOrigen=this.iCuentaBancariaRepo.seleccionarPorId(idCuentaOrigen);
 		CuentaBancaria cuentaBancariaDestino=this.iCuentaBancariaRepo.seleccionarPorId(idCuentaDestino);
@@ -30,7 +34,7 @@ public class TransferenciaServiceImpl implements ITransferenciaService {
 		transferencia.setFecha(LocalDateTime.now());
 		transferencia.setCuentaBancariaOrigen(cuentaBancariaOrigen);
 		transferencia.setCuentaBancariaDestino(cuentaBancariaDestino);
-		transferencia.setNonto(monto);
+		transferencia.setNonto(monto);//null=monto
 		
 		if(monto.compareTo(cuentaBancariaOrigen.getSaldo())<=0) {
 			//realizo transferencia
@@ -40,8 +44,11 @@ public class TransferenciaServiceImpl implements ITransferenciaService {
 			this.iCuentaBancariaRepo.actualizar(cuentaBancariaDestino);
 		}else {
 			System.out.println("Saldo insuficiente");
+			throw new RuntimeException();
 		}
 		this.iTransferenciaRepo.insertar(transferencia);
+		
+		//throw new RuntimeException();
 		
 	}
 

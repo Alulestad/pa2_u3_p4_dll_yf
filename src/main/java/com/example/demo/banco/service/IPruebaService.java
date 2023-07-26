@@ -13,5 +13,7 @@ public interface IPruebaService {
 	public void pruebaRequired();
 	
 	public void pruebaRequiresNew();
+	
+	
 
 }

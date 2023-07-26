@@ -45,6 +45,9 @@ public class Pa2U3P4DllYfApplication implements CommandLineRunner {
 	private IMatriculaService iMatriculaService;
 	
 	@Autowired
+	private ITransferenciaService iTransferenciaService;
+	
+	@Autowired
 	private ICuentaBancariaService iCuentaBancariaService;
 
 	public static void main(String[] args) {
@@ -53,7 +56,6 @@ public class Pa2U3P4DllYfApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		TransactionSynchronizationManager.isActualTransactionActive();
 		System.out.println("Main: "+TransactionSynchronizationManager.isActualTransactionActive());
 		
 		CuentaBancaria cuentaBancaria1= new CuentaBancaria();
@@ -62,7 +64,40 @@ public class Pa2U3P4DllYfApplication implements CommandLineRunner {
 		cuentaBancaria1.setSaldo(new BigDecimal(1000));
 		cuentaBancaria1.setTipo("A");
 		
-		this.iCuentaBancariaService.agregar(cuentaBancaria1);
+		//this.iCuentaBancariaService.agregar(cuentaBancaria1);
+		
+		System.out.println("UNIDAD 3");
+		
+		Propietario propietario1=new Propietario();
+		propietario1.setApellido("Molina");
+		propietario1.setCedula("1712341234");
+		propietario1.setCuentasBancarias(null);
+		propietario1.setNombre("Daniel");
+		
+		CuentaBancaria cuentaBancaria11=new CuentaBancaria();
+		cuentaBancaria11.setNumero("1234");
+		cuentaBancaria11.setPropietario(propietario1);
+		cuentaBancaria11.setSaldo(new BigDecimal(10000));
+		cuentaBancaria11.setTipo("A");
+		
+		CuentaBancaria cuentaBancaria2=new CuentaBancaria();
+		cuentaBancaria2.setNumero("1235");
+		cuentaBancaria2.setPropietario(propietario1);
+		cuentaBancaria2.setSaldo(new BigDecimal(10000));
+		cuentaBancaria2.setTipo("C");
+		
+		List<CuentaBancaria> cuentasBancarias1= new ArrayList<>();
+		cuentasBancarias1.add(cuentaBancaria11);
+		cuentasBancarias1.add(cuentaBancaria2);
+		
+		propietario1.setCuentasBancarias(cuentasBancarias1);
+		
+		//this.iCuentaBancariaService.agregar(cuentaBancaria11);
+		
+
+		this.iTransferenciaService.transferir(61, 60, new BigDecimal(3000));
+		
+		this.iTransferenciaService.reporte().forEach(System.out::println);
 	}
 
 }
