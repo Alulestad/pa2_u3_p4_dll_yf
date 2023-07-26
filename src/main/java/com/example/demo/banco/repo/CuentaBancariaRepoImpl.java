@@ -17,7 +17,9 @@ public class CuentaBancariaRepoImpl implements ICuentaBancariaRepo {
 	@PersistenceContext
 	private EntityManager entityManager;
 
+	
 	@Override
+	@Transactional(value = TxType.MANDATORY)
 	public void insertar(CuentaBancaria cuentaBancaria) {
 		//System.out.println("Repo: "+TransactionSynchronizationManager.isActualTransactionActive());
 		this.entityManager.persist(cuentaBancaria);
@@ -31,7 +33,7 @@ public class CuentaBancariaRepoImpl implements ICuentaBancariaRepo {
 	}
 
 	@Override
-	@Transactional(value = TxType.REQUIRED)//requiried
+	@Transactional(value = TxType.MANDATORY)//requiried
 	public void actualizar(CuentaBancaria cuentaBancaria) {
 		this.entityManager.merge(cuentaBancaria);
 	}
