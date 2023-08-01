@@ -30,7 +30,7 @@ public class MetodosReferenciados {
 		return Integer.valueOf(cadena);
 	}
 	
-	public Integer aplicar2(Integer valor) {
+	public Integer aplicar(Integer valor) {
 		return valor*100;
 	}
 }
