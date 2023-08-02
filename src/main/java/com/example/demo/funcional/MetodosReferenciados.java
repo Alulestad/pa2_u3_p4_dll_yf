@@ -5,32 +5,36 @@ import org.slf4j.LoggerFactory;
 
 public class MetodosReferenciados {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(Main.class); // slf4j
+	private static final Logger LOG = LoggerFactory.getLogger(MetodosReferenciados.class); // slf4j
 
 	
-	public Integer getId() {
+	public static Integer getId() {
 		return 8;
 	}
 	
+	public static String getIdHO() {
+		LOG.info("Metodos referenciados y HO");
+		return "Daniel y Yaniry";
+	}
 	
-	public void acceptar(String arg) {
+	public static void acceptar(String arg) {
 		String cadena="Daniel y Yaniry";
 		
 		LOG.info(cadena+" "+arg);
 	}
 	
-	public boolean evaluar(Integer numero) {
+	public static boolean evaluar(Integer numero) {
 		
 		
 		return numero>=0;
 	}
 	
-	public Integer aplicar(String cadena) {
+	public static Integer aplicar(String cadena) {
 		
 		return Integer.valueOf(cadena);
 	}
 	
-	public Integer aplicar(Integer valor) {
+	public static Integer aplicar(Integer valor) {
 		return valor*100;
 	}
 }
