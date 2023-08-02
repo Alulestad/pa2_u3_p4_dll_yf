@@ -42,4 +42,37 @@ public class MetodosReferenciados {
 	public static String aplicarStrStr(String cadena) {
 		return cadena+"A2";
 	}
+	
+	//suplier
+	public static Integer getSuppier() {
+		Integer num=Integer.valueOf((int)(Math.random()*100)) ;
+		LOG.info("Valor generado en getSupplier: "+num);
+		return num;
+	}
+
+	//consumer
+	public static void acceptCosumer(Integer valor) {
+		
+		LOG.info("acceptConsumer: "+valor);
+	}
+	
+	//predicate
+	public static boolean testPredicate(Integer valor) {
+		
+		return (valor.intValue()%2==0)?true:false;
+	}
+	
+	//function
+	public static String applyFunction(Integer valor) {
+		
+		return valor.toString()+"function";
+	}
+	
+	//Unary Operator
+	
+	public static Integer appyUnaryOperator(Integer valor) {
+		
+		return valor+3;
+	}
+	
 }
