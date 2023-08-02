@@ -37,4 +37,9 @@ public class MetodosReferenciados {
 	public static Integer aplicar(Integer valor) {
 		return valor*100;
 	}
+	
+	
+	public static String aplicarStrStr(String cadena) {
+		return cadena+"A2";
+	}
 }
