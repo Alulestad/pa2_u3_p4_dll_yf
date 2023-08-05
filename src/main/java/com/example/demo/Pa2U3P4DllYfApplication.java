@@ -4,7 +4,10 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -28,6 +31,7 @@ import com.example.demo.banco.service.IMateriaService;
 import com.example.demo.banco.service.IMatriculaService;
 import com.example.demo.banco.service.IPropietarioService;
 import com.example.demo.banco.service.ITransferenciaService;
+import com.example.demo.funcional.Main;
 
 import jakarta.transaction.Transactional;
 
@@ -37,18 +41,20 @@ public class Pa2U3P4DllYfApplication implements CommandLineRunner {
 
 	@Autowired
 	private IEstudianteService iEstudianteService;
-	
+
 	@Autowired
 	private IMateriaService iMateriaService;
-	
+
 	@Autowired
 	private IMatriculaService iMatriculaService;
-	
+
 	@Autowired
 	private ITransferenciaService iTransferenciaService;
-	
+
 	@Autowired
 	private ICuentaBancariaService iCuentaBancariaService;
+
+	public static final Logger LOG = LoggerFactory.getLogger(Pa2U3P4DllYfApplication.class);
 
 	public static void main(String[] args) {
 		SpringApplication.run(Pa2U3P4DllYfApplication.class, args);
@@ -56,48 +62,116 @@ public class Pa2U3P4DllYfApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		System.out.println("Main: "+TransactionSynchronizationManager.isActualTransactionActive());
+
+
+		LOG.info("Hilo:" + Thread.currentThread().getName());
+
+//		long tiempoInicial=System.currentTimeMillis();
+//		for(int i=0;i<30;i++) {
+//			Propietario propietario1=new Propietario();
+//			propietario1.setApellido("Molina");
+//			propietario1.setCedula("1712341234"+String.valueOf(i));
+//			propietario1.setCuentasBancarias(null);
+//			propietario1.setNombre("Daniel");
+//			
+//			CuentaBancaria cuentaBancaria11=new CuentaBancaria();
+//			cuentaBancaria11.setNumero(String.valueOf(i));
+//			cuentaBancaria11.setPropietario(propietario1);
+//			cuentaBancaria11.setSaldo(new BigDecimal(10000));
+//			cuentaBancaria11.setTipo("A");
+//			
+//
+//			List<CuentaBancaria> cuentasBancarias1= new ArrayList<>();
+//			cuentasBancarias1.add(cuentaBancaria11);
+//
+//			
+//			propietario1.setCuentasBancarias(cuentasBancarias1);
+//			
+//			this.iCuentaBancariaService.agregar(cuentaBancaria11);
+//		}
+//		
+//		long tiempoFinal=System.currentTimeMillis();
+//		long tiempoTranscurrido=(tiempoFinal-tiempoInicial)/1000;
+//		LOG.info("Tiempo transcurido: "+(tiempoFinal-tiempoInicial));
+//		LOG.info("Tiempo transcurido: "+tiempoTranscurrido);
+
+//		//incio
+//		long tiempoInicial=System.currentTimeMillis();
+//		List<CuentaBancaria> lista=new ArrayList<>(); 
+//		for(int i=0;i<100;i++) {
+//			Propietario propietario1=new Propietario();
+//			propietario1.setApellido("Molina");
+//			propietario1.setCedula("1712341234"+String.valueOf(i));
+//			propietario1.setCuentasBancarias(null);
+//			propietario1.setNombre("Daniel");
+//			
+//			CuentaBancaria cuentaBancaria11=new CuentaBancaria();
+//			cuentaBancaria11.setNumero(String.valueOf(i));
+//			cuentaBancaria11.setPropietario(propietario1);
+//			cuentaBancaria11.setSaldo(new BigDecimal(10000));
+//			cuentaBancaria11.setTipo("A");
+//			
+//
+//			List<CuentaBancaria> cuentasBancarias1= new ArrayList<>();
+//			cuentasBancarias1.add(cuentaBancaria11);
+//
+//			
+//			propietario1.setCuentasBancarias(cuentasBancarias1);
+//			
+//			lista.add(cuentaBancaria11);
+//
+//		}
+//		
+//		lista.parallelStream().forEach(this.iCuentaBancariaService::agregar);
+//		
+//		
+//		
+//		//fin
+//		long tiempoFinal=System.currentTimeMillis();
+//		long tiempoTranscurrido=(tiempoFinal-tiempoInicial)/1000;
+//		LOG.info("Tiempo transcurido: "+(tiempoFinal-tiempoInicial));
+//		LOG.info("Tiempo transcurido: "+tiempoTranscurrido);
+
+		// incio
+		long tiempoInicial = System.currentTimeMillis();
+		List<CuentaBancaria> lista = new ArrayList<>();
+		for (int i = 0; i < 100; i++) {
+			Propietario propietario1 = new Propietario();
+			propietario1.setApellido("Molina");
+			propietario1.setCedula("1712341234" + String.valueOf(i));
+			propietario1.setCuentasBancarias(null);
+			propietario1.setNombre("Daniel");
+
+			CuentaBancaria cuentaBancaria11 = new CuentaBancaria();
+			cuentaBancaria11.setNumero(String.valueOf(i));
+			cuentaBancaria11.setPropietario(propietario1);
+			cuentaBancaria11.setSaldo(new BigDecimal(10000));
+			cuentaBancaria11.setTipo("A");
+
+			List<CuentaBancaria> cuentasBancarias1 = new ArrayList<>();
+			cuentasBancarias1.add(cuentaBancaria11);
+
+			propietario1.setCuentasBancarias(cuentasBancarias1);
+
+			lista.add(cuentaBancaria11);
+
+		}
+
+
 		
-		CuentaBancaria cuentaBancaria1= new CuentaBancaria();
-		cuentaBancaria1.setNumero("1243");
-		cuentaBancaria1.setPropietario(null);
-		cuentaBancaria1.setSaldo(new BigDecimal(1000));
-		cuentaBancaria1.setTipo("A");
+		Stream <String> listaStream= lista.parallelStream().map(this.iCuentaBancariaService::agregar2);
+		LOG.info("Se guardaron las siguientes cuentas");
+		listaStream.forEach(LOG::info);
 		
-		//this.iCuentaBancariaService.agregar(cuentaBancaria1);
 		
-		System.out.println("UNIDAD 3");
-		
-		Propietario propietario1=new Propietario();
-		propietario1.setApellido("Molina");
-		propietario1.setCedula("1712341234");
-		propietario1.setCuentasBancarias(null);
-		propietario1.setNombre("Daniel");
-		
-		CuentaBancaria cuentaBancaria11=new CuentaBancaria();
-		cuentaBancaria11.setNumero("1234");
-		cuentaBancaria11.setPropietario(propietario1);
-		cuentaBancaria11.setSaldo(new BigDecimal(10000));
-		cuentaBancaria11.setTipo("A");
-		
-		CuentaBancaria cuentaBancaria2=new CuentaBancaria();
-		cuentaBancaria2.setNumero("1235");
-		cuentaBancaria2.setPropietario(propietario1);
-		cuentaBancaria2.setSaldo(new BigDecimal(10000));
-		cuentaBancaria2.setTipo("C");
-		
-		List<CuentaBancaria> cuentasBancarias1= new ArrayList<>();
-		cuentasBancarias1.add(cuentaBancaria11);
-		cuentasBancarias1.add(cuentaBancaria2);
-		
-		propietario1.setCuentasBancarias(cuentasBancarias1);
-		
-		//this.iCuentaBancariaService.agregar(cuentaBancaria11);
+		// fin
+		long tiempoFinal = System.currentTimeMillis();
+		long tiempoTranscurrido = (tiempoFinal - tiempoInicial) / 1000;
+		LOG.info("Tiempo transcurido: " + (tiempoFinal - tiempoInicial));
+		LOG.info("Tiempo transcurido: " + tiempoTranscurrido);
+
 		
 
-		this.iTransferenciaService.transferir(61, 60, new BigDecimal(3000));
-		
-		this.iTransferenciaService.reporte().forEach(System.out::println);
 	}
 
 }

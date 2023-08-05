@@ -42,6 +42,10 @@ public class Main {
 		LOG.info("5.- Unary operator");
 		listaArray.replaceAll(MetodosReferenciados::appyUnaryOperator);
 		LOG.info(listaArray.toString());
+		
+		
+		
+		
 	}
 
 }
