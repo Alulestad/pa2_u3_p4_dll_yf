@@ -8,4 +8,6 @@ public interface ICuentaBancariaRepo {
 	public CuentaBancaria seleccionarPorId(Integer id);
 	
 	public void actualizar(CuentaBancaria cuentaBancaria);
+
+	void insertarAsync(CuentaBancaria cuentaBancaria);
 }

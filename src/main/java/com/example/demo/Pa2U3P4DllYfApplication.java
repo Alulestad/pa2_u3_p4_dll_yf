@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -67,11 +68,9 @@ public class Pa2U3P4DllYfApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		// Asyncrono sin respuesta
-//		LOG.info("Hilo:" + Thread.currentThread().getName());
-//
-//		// incio
-//		long tiempoInicial = System.currentTimeMillis();
+//		// Asyncrono sin respuesta
+//		LOG.info("Hilo Main:" + Thread.currentThread().getName());
+//		long tiempoInicial = System.currentTimeMillis();// incio
 //		List<CuentaBancaria> lista = new ArrayList<>();
 //		for (int i = 0; i < 10; i++) {
 //			Propietario propietario1 = new Propietario();
@@ -97,13 +96,12 @@ public class Pa2U3P4DllYfApplication implements CommandLineRunner {
 //
 //		}
 //
-//		List<String> listFinal = lista.parallelStream().map(this.iCuentaBancariaService::agregar2)
-//				.collect(Collectors.toList());
+//		/*List<String> listFinal = lista.parallelStream().map(this.iCuentaBancariaService::agregar2)
+//				.collect(Collectors.toList());*/
 //		// LOG.info("Se guardaron las siguientes cuentas");
 //		// listFinal.forEach(LOG::info);
 //
-//		// fin
-//		long tiempoFinal = System.currentTimeMillis();
+//		long tiempoFinal = System.currentTimeMillis();// fin
 //		long tiempoTranscurrido = (tiempoFinal - tiempoInicial) / 1000;
 //		LOG.info("Tiempo transcurido: " + (tiempoFinal - tiempoInicial));
 //		LOG.info("Tiempo transcurido: " + tiempoTranscurrido);
@@ -112,10 +110,8 @@ public class Pa2U3P4DllYfApplication implements CommandLineRunner {
 		
 		LOG.info("###############################################################################");
 		// Asyncrono Con respuesta
-		LOG.info("Hilo:" + Thread.currentThread().getName());
-
-		// incio
-		long tiempoInicial = System.currentTimeMillis();
+		LOG.info("Hilo Main:" + Thread.currentThread().getName());
+		long tiempoInicial = System.currentTimeMillis();// incio
 		List<CompletableFuture<String>> listaRespuesta= new ArrayList<>();
 		
 		List<CuentaBancaria> lista = new ArrayList<>();
@@ -145,19 +141,37 @@ public class Pa2U3P4DllYfApplication implements CommandLineRunner {
 		}
 		
 		//Sentencia que espera que termine de procesarse todos los hilos para obtener la respuesta
+		
 		CompletableFuture.allOf(listaRespuesta.get(0),listaRespuesta.get(1),listaRespuesta.get(2),listaRespuesta.get(3),listaRespuesta.get(4),listaRespuesta.get(5),listaRespuesta.get(6),listaRespuesta.get(6),listaRespuesta.get(7),listaRespuesta.get(8),listaRespuesta.get(9));
 
-		LOG.info("Respuesta 0:" +listaRespuesta.get(0).get());
+		LOG.info("Respuesta 0 del listaRespuesta (Array):" +listaRespuesta.get(0).get());
+		
 
 		// LOG.info("Se guardaron las siguientes cuentas");
 		// listFinal.forEach(LOG::info);
 
-		// fin
-		long tiempoFinal = System.currentTimeMillis();
+		long tiempoFinal = System.currentTimeMillis();// fin
 		long tiempoTranscurrido = (tiempoFinal - tiempoInicial) / 1000;
 		LOG.info("Tiempo transcurido: " + (tiempoFinal - tiempoInicial));
 		LOG.info("Tiempo transcurido: " + tiempoTranscurrido);
 		LOG.info("Se termino de procesar todo");
+		
+		LOG.info("#############Respuestas puras del tipo CompletableFuture#############");
+		listaRespuesta.stream().map(String::valueOf).forEach(LOG::info);
+		LOG.info("#############Respuestas en orden de adicion en el list#############");
+		listaRespuesta.stream().map((value)->{
+			try {
+				return value.get();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return String.valueOf(value);
+		}).forEach(LOG::info);
+		
 
 	}
 

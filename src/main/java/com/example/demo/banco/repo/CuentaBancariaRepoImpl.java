@@ -24,15 +24,23 @@ public class CuentaBancariaRepoImpl implements ICuentaBancariaRepo {
 
 	
 	@Override
+	@Transactional(value = TxType.MANDATORY)
 	public void insertar(CuentaBancaria cuentaBancaria) {
 		//System.out.println("Repo: "+TransactionSynchronizationManager.isActualTransactionActive());
 		LOG.info("Hilo Repository:"+Thread.currentThread().getName());
 		this.entityManager.persist(cuentaBancaria);
 	}
 
-
+	@Override
+	@Transactional(value = TxType.MANDATORY)
+	public void insertarAsync(CuentaBancaria cuentaBancaria) {
+		//System.out.println("Repo: "+TransactionSynchronizationManager.isActualTransactionActive());
+		LOG.info("Hilo Repository:"+Thread.currentThread().getName());
+		this.entityManager.persist(cuentaBancaria);
+	}
 	
 	@Override
+	@Transactional(value = TxType.NOT_SUPPORTED)
 	public CuentaBancaria seleccionarPorId(Integer id) {
 		return this.entityManager.find(CuentaBancaria.class, id);
 	}

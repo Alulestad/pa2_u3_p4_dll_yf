@@ -29,10 +29,11 @@ public class CuentaBancariaServiceImpl implements ICuentaBancariaService {
 	private IPruebaService iPruebaService;
 
 	@Override
+	@Transactional(value = TxType.REQUIRED)
 	public void agregar(CuentaBancaria cuentaBancaria) {
 		// System.out.println("Service:
 		// "+TransactionSynchronizationManager.isActualTransactionActive());
-		LOG.info("Hilo Service:" + Thread.currentThread().getName());
+		LOG.info("Hilo Service agregar:" + Thread.currentThread().getName());
 
 		// Sumas, restas, multiplicaciones, la logica demora 1 segundo.
 		try {
@@ -52,8 +53,9 @@ public class CuentaBancariaServiceImpl implements ICuentaBancariaService {
 	}
 
 	@Override
+	@Transactional(value = TxType.REQUIRED)
 	public String agregar2(CuentaBancaria cuentaBancaria) {
-		LOG.info("Hilo Service2:" + Thread.currentThread().getName());
+		LOG.info("Hilo Service agregar2:" + Thread.currentThread().getName());
 
 		// Sumas, restas, multiplicaciones, la logica demora 1 segundo.
 		try {
@@ -68,9 +70,10 @@ public class CuentaBancariaServiceImpl implements ICuentaBancariaService {
 	}
 
 	@Override
+	@Transactional(value = TxType.REQUIRED)
 	@Async //spring
 	public void agregarAsincrono(CuentaBancaria bancaria) {
-		LOG.info("Hilo Service:" + Thread.currentThread().getName());
+		LOG.info("Hilo Service agregarAsincrono:" + Thread.currentThread().getName());
 
 		// Sumas, restas, multiplicaciones, la logica demora 1 segundo.
 		try {
@@ -79,14 +82,15 @@ public class CuentaBancariaServiceImpl implements ICuentaBancariaService {
 			e.printStackTrace();
 		}
 
-		this.iCuentaBancariaRepo.insertar(bancaria);
+		this.iCuentaBancariaRepo.insertarAsync(bancaria);
 
 	}
 	
 	@Override
+	@Transactional(value = TxType.REQUIRED)
 	@Async
 	public CompletableFuture<String> agregarAsincrono2(CuentaBancaria bancaria) { //CompletableFuture<String> que se va a completar el retorno en un futuro
-		LOG.info("Hilo Service:" + Thread.currentThread().getName());
+		LOG.info("Hilo Service agregarAsincrono2:" + Thread.currentThread().getName());
 
 		// Sumas, restas, multiplicaciones, la logica demora 1 segundo.
 		try {
@@ -107,12 +111,14 @@ public class CuentaBancariaServiceImpl implements ICuentaBancariaService {
 	}
 
 	@Override
+	@Transactional(value = TxType.NOT_SUPPORTED)
 	public CuentaBancaria buscarPorId(Integer id) {
 		// TODO Auto-generated method stub
 		return this.iCuentaBancariaRepo.seleccionarPorId(id);
 	}
 
 	@Override
+	@Transactional(value = TxType.REQUIRED)
 	public void actualizar(CuentaBancaria cuentaBancaria) {
 		// TODO Auto-generated method stub
 		this.iCuentaBancariaRepo.actualizar(cuentaBancaria);
