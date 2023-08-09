@@ -24,7 +24,6 @@ public class CuentaBancariaRepoImpl implements ICuentaBancariaRepo {
 
 	
 	@Override
-	@Transactional(value = TxType.MANDATORY)
 	public void insertar(CuentaBancaria cuentaBancaria) {
 		//System.out.println("Repo: "+TransactionSynchronizationManager.isActualTransactionActive());
 		LOG.info("Hilo Repository:"+Thread.currentThread().getName());
