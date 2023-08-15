@@ -1,5 +1,7 @@
 package com.example.demo.banco.service;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -104,6 +106,17 @@ public class CuentaBancariaServiceImpl implements ICuentaBancariaService {
 		return CompletableFuture.completedFuture(bancaria.getNumero());
 	}
 
+	@Async
+	public CompletableFuture<Integer>  calcularEdad(LocalDate localDate) {
+		Period period=Period.between(localDate, LocalDate.now());
+		try {
+			TimeUnit.SECONDS.sleep(5);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return CompletableFuture.completedFuture(period.getYears());
+	}
+	
 	public void prueba() {
 		System.out.println(TransactionSynchronizationManager.isActualTransactionActive());
 

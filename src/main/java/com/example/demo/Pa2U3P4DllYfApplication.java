@@ -1,13 +1,13 @@
 package com.example.demo;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,30 +15,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cglib.transform.impl.AddDelegateTransformer;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import com.example.demo.banco.repo.ITransferenciaRepo;
 import com.example.demo.banco.repo.modelo.CuentaBancaria;
-import com.example.demo.banco.repo.modelo.Estudiante;
-import com.example.demo.banco.repo.modelo.Habitacion;
-import com.example.demo.banco.repo.modelo.Hotel;
-import com.example.demo.banco.repo.modelo.Materia;
 import com.example.demo.banco.repo.modelo.Propietario;
-import com.example.demo.banco.repo.modelo.Provincia;
-import com.example.demo.banco.repo.modelo.Semestre;
 import com.example.demo.banco.service.ICuentaBancariaService;
 import com.example.demo.banco.service.IEstudianteService;
-import com.example.demo.banco.service.IHabitacionService;
-import com.example.demo.banco.service.IHotelService;
 import com.example.demo.banco.service.IMateriaService;
 import com.example.demo.banco.service.IMatriculaService;
-import com.example.demo.banco.service.IPropietarioService;
 import com.example.demo.banco.service.ITransferenciaService;
-import com.example.demo.funcional.Main;
-
-import jakarta.transaction.Transactional;
 
 @SpringBootApplication
 @EnableAsync // spring
@@ -67,7 +53,43 @@ public class Pa2U3P4DllYfApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		
+		long tiempoInicial = System.currentTimeMillis();
+		
+		List<CompletableFuture<Integer>> listaCompletableEdades=new ArrayList<>();
+		for(int i=0;i<10;i++) {
+			int yyyy=((int) (Math.random()*2022)) +1;
+			int mm=((int) (Math.random()*11))+1;
+			int dd=((int) (Math.random()*27))+1;
+			LocalDate localDate= LocalDate.of(yyyy, mm, dd);
+			listaCompletableEdades.add(iCuentaBancariaService.calcularEdad(localDate));
+		}
 
+		
+		CompletableFuture.allOf(listaCompletableEdades.get(0),listaCompletableEdades.get(1),
+				listaCompletableEdades.get(2),listaCompletableEdades.get(3),
+				listaCompletableEdades.get(4),listaCompletableEdades.get(5),
+				listaCompletableEdades.get(6),listaCompletableEdades.get(7),
+				listaCompletableEdades.get(8),listaCompletableEdades.get(9));
+		
+		float sumaEdades=0;
+		for (CompletableFuture<Integer> cf : listaCompletableEdades) {
+			LOG.info("EDAD: "+cf.get());
+			sumaEdades=sumaEdades+(float) cf.get();
+		}
+		float promedio=sumaEdades/listaCompletableEdades.size();
+		LOG.info("El promedio de las edades es: "+promedio);
+		
+		long tiempoFinal = System.currentTimeMillis();
+		LOG.info("Tiempo transcurido: " + (tiempoFinal-tiempoInicial));
+		
+		
+		
+	}
+	
+
+	
+	public void codigoBaseAsincrono() throws InterruptedException, ExecutionException {
 //		// Asyncrono sin respuesta
 //		LOG.info("Hilo Main:" + Thread.currentThread().getName());
 //		long tiempoInicial = System.currentTimeMillis();// incio
@@ -135,7 +157,7 @@ public class Pa2U3P4DllYfApplication implements CommandLineRunner {
 
 			lista.add(cuentaBancaria11);
 
-			CompletableFuture<String> respuesta= this.iCuentaBancariaService.agregarAsincrono2(cuentaBancaria11);
+			CompletableFuture<String> respuesta = this.iCuentaBancariaService.agregarAsincrono2(cuentaBancaria11);
 			listaRespuesta.add(respuesta);
 
 		}
@@ -187,8 +209,8 @@ public class Pa2U3P4DllYfApplication implements CommandLineRunner {
 //			}
 //			return String.valueOf(value);
 //		}).forEach(LOG::info);
-		
-
 	}
 
+	
+	
 }

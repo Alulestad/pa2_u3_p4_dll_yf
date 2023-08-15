@@ -1,5 +1,6 @@
 package com.example.demo.banco.service;
 
+import java.time.LocalDate;
 import java.util.concurrent.CompletableFuture;
 
 import com.example.demo.banco.repo.modelo.CuentaBancaria;
@@ -15,6 +16,8 @@ public interface ICuentaBancariaService {
 	public void actualizar(CuentaBancaria cuentaBancaria);
 	
 	public void agregarAsincrono(CuentaBancaria bancaria);
+	
+	public CompletableFuture<Integer>  calcularEdad(LocalDate localDate);
 	
 	public CompletableFuture<String> agregarAsincrono2(CuentaBancaria bancaria);
 }
