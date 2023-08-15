@@ -141,10 +141,25 @@ public class Pa2U3P4DllYfApplication implements CommandLineRunner {
 		}
 		
 		//Sentencia que espera que termine de procesarse todos los hilos para obtener la respuesta
-		
-		CompletableFuture.allOf(listaRespuesta.get(0),listaRespuesta.get(1),listaRespuesta.get(2),listaRespuesta.get(3),listaRespuesta.get(4),listaRespuesta.get(5),listaRespuesta.get(6),listaRespuesta.get(6),listaRespuesta.get(7),listaRespuesta.get(8),listaRespuesta.get(9));
+		//CompletableFuture.allOf(listaRespuesta.get(0),listaRespuesta.get(1),listaRespuesta.get(2)).get();
+		CompletableFuture.allOf(listaRespuesta.get(0),listaRespuesta.get(1),listaRespuesta.get(2),listaRespuesta.get(3),listaRespuesta.get(4),listaRespuesta.get(5),listaRespuesta.get(6),listaRespuesta.get(6),listaRespuesta.get(7),listaRespuesta.get(8),listaRespuesta.get(9)).get();
 
+		
 		LOG.info("Respuesta 0 del listaRespuesta (Array):" +listaRespuesta.get(0).get());
+		LOG.info("Respuesta 0 del listaRespuesta (Array):" +listaRespuesta.get(1).get());
+		LOG.info("Respuesta 0 del listaRespuesta (Array):" +listaRespuesta.get(2).get());
+		LOG.info("Respuesta 0 del listaRespuesta (Array):" +listaRespuesta.get(3).get());
+		LOG.info("Respuesta 0 del listaRespuesta (Array):" +listaRespuesta.get(4).get());
+		LOG.info("Respuesta 0 del listaRespuesta (Array):" +listaRespuesta.get(5).get());
+		LOG.info("Respuesta 0 del listaRespuesta (Array):" +listaRespuesta.get(6).get());
+		LOG.info("Respuesta 0 del listaRespuesta (Array):" +listaRespuesta.get(7).get());
+		LOG.info("Respuesta 0 del listaRespuesta (Array):" +listaRespuesta.get(8).get());
+		LOG.info("Respuesta 0 del listaRespuesta (Array):" +listaRespuesta.get(9).get());
+
+		
+		//si se quita el CompletableFuture.allOf espera que se termine el 1 espera que termine el 2 y así susesivamente. 
+		
+		
 		
 
 		// LOG.info("Se guardaron las siguientes cuentas");
@@ -156,21 +171,22 @@ public class Pa2U3P4DllYfApplication implements CommandLineRunner {
 		LOG.info("Tiempo transcurido: " + tiempoTranscurrido);
 		LOG.info("Se termino de procesar todo");
 		
-		LOG.info("#############Respuestas puras del tipo CompletableFuture#############");
-		listaRespuesta.stream().map(String::valueOf).forEach(LOG::info);
-		LOG.info("#############Respuestas en orden de adicion en el list#############");
-		listaRespuesta.stream().map((value)->{
-			try {
-				return value.get();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return String.valueOf(value);
-		}).forEach(LOG::info);
+		
+//		LOG.info("#############Respuestas puras del tipo CompletableFuture#############");
+//		listaRespuesta.stream().map(String::valueOf).forEach(LOG::info);
+//		LOG.info("#############Respuestas en orden de adicion en el list#############");
+//		listaRespuesta.stream().map((value)->{
+//			try {
+//				return value.get();
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (ExecutionException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			return String.valueOf(value);
+//		}).forEach(LOG::info);
 		
 
 	}

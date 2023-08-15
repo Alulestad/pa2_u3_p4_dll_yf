@@ -77,7 +77,7 @@ public class CuentaBancariaServiceImpl implements ICuentaBancariaService {
 
 		// Sumas, restas, multiplicaciones, la logica demora 1 segundo.
 		try {
-			TimeUnit.SECONDS.sleep(1);
+			TimeUnit.SECONDS.sleep(30);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
